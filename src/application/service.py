@@ -44,7 +44,6 @@ class RestService:
         log.info("Rest service configured")
         return app
 
-
     def set_middlewares(self, app: FastAPI) -> None:
         app.add_middleware(
             CORSMiddleware,
@@ -54,15 +53,12 @@ class RestService:
             allow_headers=["*"],
         )
 
-
     def set_routes(self, app: FastAPI) -> None:
         app.include_router(api_router)
-
 
     def set_exceptions(self, app: FastAPI) -> None:
         ...
         # for exception, handler in EXCEPTION_HANDLERS:
         # app.add_exception_handler(exception, handler)
-
 
     def set_dependencies(self, app: FastAPI) -> None: ...
