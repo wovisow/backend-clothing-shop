@@ -1,4 +1,4 @@
-from src.application.config.base import AppBaseSettings, Environment
+from src.app.config.base import AppBaseSettings, Environment
 
 
 class AppDevSettings(AppBaseSettings):

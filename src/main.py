@@ -1,5 +1,5 @@
-from src.application.service import RestService
-from src.application.config import settings
+from src.app.service import RestService
+from src.app.config import settings
 
 
 app = RestService(config=settings).create_application()

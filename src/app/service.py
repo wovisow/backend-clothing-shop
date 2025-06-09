@@ -2,12 +2,16 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 import logging
 from typing import AsyncIterator
+from dishka.integrations.fastapi import setup_dishka
 
+from dishka import make_async_container
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.router import api_router
-from src.application.config import AppBaseSettings
+from src.presenters.api.router import api_router
+from src.app.config import AppBaseSettings
+from src.domain.provider import DomainProvider
+from src.external.database.provider import DBProvider
 
 
 log = logging.getLogger(__name__)
@@ -35,7 +39,7 @@ class RestService:
             redoc_url="/docs/redoc",
             lifespan=lifespan,
         )
-
+        print(self.config.model_dump())
         self.set_middlewares(app=app)
         self.set_routes(app=app)
         self.set_exceptions(app=app)
@@ -61,4 +65,13 @@ class RestService:
         # for exception, handler in EXCEPTION_HANDLERS:
         # app.add_exception_handler(exception, handler)
 
-    def set_dependencies(self, app: FastAPI) -> None: ...
+    def set_dependencies(self, app: FastAPI) -> None:
+        container = make_async_container(
+            DomainProvider(),
+            DBProvider(
+                dsn=self.config.db.dsn_url,
+                debug=self.config.debug,
+            ),
+            skip_validation=True,
+        )
+        setup_dishka(container=container, app=app)

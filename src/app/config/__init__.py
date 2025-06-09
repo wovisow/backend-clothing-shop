@@ -1,9 +1,9 @@
 from functools import lru_cache
 from decouple import config
 
-from src.application.config.base import AppBaseSettings, Environment
-from src.application.config.development import AppDevSettings
-from src.application.config.production import AppProdSettings
+from src.app.config.base import AppBaseSettings, Environment
+from src.app.config.development import AppDevSettings
+from src.app.config.production import AppProdSettings
 
 
 @lru_cache
