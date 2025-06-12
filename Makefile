@@ -3,8 +3,10 @@ APP_HOST=127.0.0.1
 APP_PORT=8000
 ALEMBIC = alembic -c src/external/database/alembic.ini
 
+linter:
+	ruff format . && ruff check . --fix
 
-run:
+app:
 	uvicorn $(MODULE) --reload --host $(APP_HOST) --port $(APP_PORT)
 
 local:

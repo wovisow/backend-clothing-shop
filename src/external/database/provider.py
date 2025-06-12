@@ -3,7 +3,9 @@ from dishka import AnyOf, BaseScope, Component, Provider, Scope, provide
 
 from src.domain.interfaces.monitoring import IMonitoringRepository
 from src.domain.interfaces.uow import AbstractUOW
+from src.domain.interfaces.user import IUserRepository
 from src.external.database.repositories.monitoring import PGMonitoringRepository
+from src.external.database.repositories.user import PGUserRepository
 from src.external.database.uow import SQLAlchemyUow
 from src.external.database.utils import create_engine, create_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
@@ -42,3 +44,10 @@ class DBProvider(Provider):
         uow: SQLAlchemyUow,
     ) -> IMonitoringRepository:
         return PGMonitoringRepository(session=uow.session)
+
+    @provide(scope=Scope.REQUEST)
+    async def db_user_repository(
+        self,
+        uow: SQLAlchemyUow,
+    ) -> IUserRepository:
+        return PGUserRepository(session=uow.session)

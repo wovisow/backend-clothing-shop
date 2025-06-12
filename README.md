@@ -12,5 +12,5 @@
 
 Запуск приложения:
 ```bash
-make run
+make app
 ```

@@ -8,6 +8,7 @@ from dishka import make_async_container
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.external.provider import ExternalProvider
 from src.presenters.api.router import api_router
 from src.app.config import AppBaseSettings
 from src.domain.provider import DomainProvider
@@ -39,7 +40,6 @@ class RestService:
             redoc_url="/docs/redoc",
             lifespan=lifespan,
         )
-        print(self.config.model_dump())
         self.set_middlewares(app=app)
         self.set_routes(app=app)
         self.set_exceptions(app=app)
@@ -72,6 +72,7 @@ class RestService:
                 dsn=self.config.db.dsn_url,
                 debug=self.config.debug,
             ),
+            ExternalProvider(),
             skip_validation=True,
         )
         setup_dishka(container=container, app=app)
