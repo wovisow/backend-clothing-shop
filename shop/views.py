@@ -178,6 +178,8 @@ def get_create_order(request):
         return Response({'data': serializer.data}, status=200)
 
     if request.method == 'POST':
+        serializer = CreateOrderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         try:
             cart = Cart.objects.get(user=request.user)
         except:
@@ -186,6 +188,10 @@ def get_create_order(request):
         for product in cart.products.all():
             order.products.add(product)
             order.order_price += product.price
+        
+        order.delivery_address = serializer.validated_data['delivery_address']
+        order.delivery_method = serializer.validated_data['delivery_method']
+        order.comment = serializer.validated_data['comment']
         order.save()
         cart.delete()
         serializer = OrderSerializer(order)

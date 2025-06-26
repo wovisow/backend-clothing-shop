@@ -61,7 +61,14 @@ class CartSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True)
-    
+
     class Meta:
         model = Order
         fields = ['id', 'products', 'order_price', 'delivery_method', 'delivery_address', 'comment', 'created_at']
+
+    
+
+class CreateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'order_price', 'delivery_method', 'delivery_address', 'comment']
